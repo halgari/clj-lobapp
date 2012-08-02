@@ -13,10 +13,3 @@
    :db/fulltext true
    :db/doc "A docstring"
    :db.install/_attribute :db.part/db})
-
-
-(defschema :schtest
-    :foo [:string :one :fulltext "foo"])
-
-
-(fact (meta (var schtest)) => (contains {:schema true}))

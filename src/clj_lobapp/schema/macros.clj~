@@ -15,6 +15,16 @@
    :one :db.cardinality/one
    :many :db.cardinality/many})
 
+(defn assert-expr
+  "Asserts that x is true. If so, x is returned insteda of nil"
+  [x]
+  (assert x)
+  x)
+
+(defn assert-seq
+  [s]
+  (map assert-expr s))
+
 (defn map-key [x]
   (cond (string? x) :db/doc
         (contains? keymaps x) (keymaps x)
@@ -33,10 +43,3 @@
         (merge {:db/id #db/id [:db.part/db]
                 :db/ident ident
                 :db.install/_attribute :db.part/db}))))
-
-(defmacro defschema [nm & attrs]
-    (let [cols (map #(apply gen-schema-column nm %) 
-                    (partition 2 attrs))]
-        `(defn ~(with-meta (symbol (name nm)) {:schema true})
-               []
-               [~@cols])))
