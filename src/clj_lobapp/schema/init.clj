@@ -31,7 +31,15 @@
   x)
 
 (defn init-schemas []
-  (d/transact conn (debug (mapcat get-schemas schema-ns))))
+  (d/transact conn (mapcat get-schemas schema-ns)))
 
 (defn init-data []
-  (d/transact conn (debug (mapcat get-data schema-ns))))
+  (d/transact conn (mapcat get-data schema-ns)))
+
+(defn query [qry]
+  (q qry (db conn)))
+
+(defn by-attr [attr val]
+  [:find '?a '?b :where ['?l attr val]
+   ['?l :login/name '?a ]
+   ['?l :login/password '?b]])

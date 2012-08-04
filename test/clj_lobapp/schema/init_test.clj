@@ -12,3 +12,6 @@
 
 (init-schemas)
 (init-data)
+
+(fact (first (query (by-attr :login/name "admin")))
+      => ["admin" "changeme"])
