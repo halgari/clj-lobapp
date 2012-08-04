@@ -30,13 +30,12 @@
   (let [ident (keyword (name schema) (name nm))]
     (-> (zipmap (map map-key specs)
                 (map map-value specs))
-        (merge {:db/id #db/id [:db.part/db]
+        (merge {:db/id (d/tempid :db.part/db)
                 :db/ident ident
                 :db.install/_attribute :db.part/db}))))
 
 (defmacro defschema [nm & attrs]
-    (let [cols (map #(apply gen-schema-column nm %) 
+    (let [cols (map #(apply gen-schema-column nm %)
                     (partition 2 attrs))]
-        `(defn ~(with-meta (symbol (name nm)) {:schema true})
-               []
+        `(def ~(with-meta (symbol (name nm)) {:schema true})
                [~@cols])))
